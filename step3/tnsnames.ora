@@ -1,0 +1,11 @@
+ORCL =  
+(DESCRIPTION =  
+  (ADDRESS = (PROTOCOL = TCP)(HOST = oradb11g)(PORT = 1521))   
+  (CONNECT_DATA =      (SERVER = DEDICATED)      (SERVICE_NAME = bjzw)    
+  )  
+ )
+ EXTPROC_CONNECTION_DATA =  
+ (DESCRIPTION =    
+ (ADDRESS_LIST =      
+ (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1))    )  
+ (CONNECT_DATA =      (SID = PLSExtProc)      (PRESENTATION = RO)    )  )

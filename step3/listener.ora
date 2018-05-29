@@ -1,0 +1,3 @@
+LISTENER1 =  
+(DESCRIPTION =    
+(ADDRESS = (PROTOCOL = TCP)(HOST = oradb11g)(PORT = 1521)) )
