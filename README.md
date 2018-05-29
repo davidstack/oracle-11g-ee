@@ -6,6 +6,7 @@ A [Docker](https://www.docker.com/) image with [Oracle Database 11g Enterprise E
 - Enterprise Manager on HTTPS port 1158
 - Add custom hostname
 - default database and password is "pubinfo"
+- disable dbconsole
 
 ## Build
 
@@ -150,9 +151,9 @@ Done! Commit the container now.
 1) `$ docker build -t oracle-11g step3`
 
 ## Run
-Create and run a container named oracle-11g with **mandatory hostname *oradb11g***:
+Create and run a container named oracle-11g:
 ```
-$ docker run --privileged -dP -h oradb11g --name oracle-11g oracle-11g
+$ docker run --privileged -d -p 1521:1521 -p 1158:1158 --name oracle-11g oracle-11g
 ```
 
 ## Connect
