@@ -4,6 +4,8 @@ Fork from [tnguyen1/dockerfiles](https://github.com/tnguyen1/dockerfiles/tree/ma
 A [Docker](https://www.docker.com/) image with [Oracle Database 11g Enterprise Edition Release 11.2.0.1.0](http://www.oracle.com/technetwork/database/enterprise-edition/overview/index.html) running in [Oracle Linux 6.7](http://www.oracle.com/us/technologies/linux/overview/index.html)
 - ORCL database on port 1521
 - Enterprise Manager on HTTPS port 1158
+- Add custom hostname
+- default database and password is "pubinfo"
 
 ## Build
 
