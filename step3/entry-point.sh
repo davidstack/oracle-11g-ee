@@ -3,11 +3,50 @@
 mount -t tmpfs shmfs -o size=4g /dev/shm
 
 #replace hostname when start container every time
+source /home/oracle/.bash_profile
 echo "replace listener.ora and tnsnames.ora"
-cp /opt/listener.ora $ORACLE_HOME/network/admin/listener.ora
-cp /opt/tnsnames.ora $ORACLE_HOME/network/admin/tnsnames.ora
+cp /tmp/listener.ora $ORACLE_HOME/network/admin/listener.ora
+cp /tmp/tnsnames.ora $ORACLE_HOME/network/admin/tnsnames.ora
 sed -i "s#oradb11g#$HOSTNAME#" $ORACLE_HOME/network/admin/listener.ora
 sed -i "s#oradb11g#$HOSTNAME#" $ORACLE_HOME/network/admin/tnsnames.ora
+
+
+
+#need rebuild so in container ,we do not start db console
+#while true; do
+#  dbconsole=`ps -ef | grep "emwd.pl dbconsole" | grep -v grep`
+#  if [ "$dbconsole" == "" ]
+#  then
+#    echo "starting dbconsole"
+#    su - oracle -c "emctl start dbconsole"
+#  else
+#    echo "start dbconsole success"
+#    break
+#  fi 
+#  sleep 1m
+#done;
+	
+INIT_FILE="/data/opt/initfinished"
+INIT_FILE2="/opt/initfinished"
+if [ -f "$INIT_FILE" -a -f "$INIT_FILE2" ]; then 
+    echo "database has init finished,start database only..."
+#rm /opt -Rf
+#ln -s /data/opt /opt
+elif [ -f "$INIT_FILE" -a ! -f "$INIT_FILE2" ]; then
+	echo "database has init finished,just create sysmbol link.and start database"
+    rm /opt -Rf
+    ln -s /data/opt /opt
+else 
+	echo "Database not initialized. Initializing database."
+	if [ -z "$CHARACTER_SET" ]; then
+		export CHARACTER_SET="ZHS16GBK"
+	fi
+	export IMPORT_FROM_VOLUME=true
+	#mv oracle data to syslink
+	mv /opt/ /data -f
+	ln -s /data/opt /opt
+	echo "init pubinfo data"
+fi
 
 #health check
 while true; do
@@ -25,32 +64,6 @@ while true; do
   fi
   sleep 1m
 done
-
-#need rebuild so in container ,we do not start db console
-#while true; do
-#  dbconsole=`ps -ef | grep "emwd.pl dbconsole" | grep -v grep`
-#  if [ "$dbconsole" == "" ]
-#  then
-#    echo "starting dbconsole"
-#    su - oracle -c "emctl start dbconsole"
-#  else
-#    echo "start dbconsole success"
-#    break
-#  fi 
-#  sleep 1m
-#done;
-	
-INIT_FILE="/opt/initfinished"
-if [ -f "$INIT_FILE" ]; then 
-    echo "database has init finished,start database only..."
-else
-	echo "Database not initialized. Initializing database."
-	if [ -z "$CHARACTER_SET" ]; then
-		export CHARACTER_SET="ZHS16GBK"
-	fi
-	export IMPORT_FROM_VOLUME=true
-fi
-
 
 
 if [ $IMPORT_FROM_VOLUME ]; then
