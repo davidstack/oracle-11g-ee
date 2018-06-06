@@ -7,6 +7,7 @@ A [Docker](https://www.docker.com/) image with [Oracle Database 11g Enterprise E
 - Add custom hostname
 - default database and password is "pubinfo"
 - disable dbconsole
+- add remote listen
 
 ## Build
 
@@ -153,12 +154,10 @@ Done! Commit the container now.
 ## Run
 Create and run a container named oracle-11g:
 ```
-$ docker run --privileged -d -p 1521:1521 -p 1158:1158 --name oracle-11g oracle-11g
+$ docker run --privileged -d -p 1521:1521 -p 1158:1158 /opt/pubinfo/oracle/data:/docker-entrypoint-initdb.d  -v /data/oracle:/data   -v /etc/localtime:/etc/localtime:ro --name oracle-11g oracle-11g
 ```
 
 ## Connect
 - `$ sqlplus sys/change_on_install as sysdba`
 - `$ sqlplus system/manager`
-
-## License
-[GNU Lesser General Public License (LGPL)](http://www.gnu.org/licenses/lgpl-3.0.txt) for the contents of this GitHub repo; for Oracle's database software, see their [Licensing Information](http://docs.oracle.com/cd/E11882_01/license.112/e47877/toc.htm)
+- `$ use PLSql Developer`
