@@ -1,7 +1,7 @@
 ORCL =  
 (DESCRIPTION =  
   (ADDRESS = (PROTOCOL = TCP)(HOST = oradb11g)(PORT = 1521))   
-  (CONNECT_DATA =      (SERVER = DEDICATED)      (SERVICE_NAME = bjzw)    
+  (CONNECT_DATA =      (SERVER = DEDICATED)      (SERVICE_NAME = pubinfo)    
   )  
  )
  EXTPROC_CONNECTION_DATA =  

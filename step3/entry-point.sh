@@ -67,27 +67,8 @@ done
 
 
 if [ $IMPORT_FROM_VOLUME ]; then
-	echo "Starting import from '/docker-entrypoint-initdb.d':"
-    #create table
-	for f in /docker-entrypoint-initdb.d/table/*; do
-		echo "found file /docker-entrypoint-initdb.d/table/$f"
-		case "$f" in
-			*.sql)    echo "[IMPORT] $0: running $f"; echo "exit" | su oracle -c "NLS_LANG=.$CHARACTER_SET $ORACLE_HOME/bin/sqlplus -S / as sysdba @$f"; echo ;;
-			*)        echo "[IMPORT] $0: ignoring $f" ;;
-		esac
-		echo
-	done
-	
-	#import data
-	for f in /docker-entrypoint-initdb.d/data/*; do
-		echo "found file /docker-entrypoint-initdb.d/data/$f"
-		case "$f" in
-			*.sql)    echo "[IMPORT] $0: running $f"; echo "exit" | su oracle -c "NLS_LANG=.$CHARACTER_SET $ORACLE_HOME/bin/sqlplus -S / as sysdba @$f"; echo ;;
-		    *.dmp)    echo "[IMPORT] $0: running $f"; impdp $f ;;
-			*)        echo "[IMPORT] $0: ignoring $f" ;;
-		esac
-		echo
-	done
+    chmod 750 /docker-entrypoint-initdb.d/initsql.sh
+	/docker-entrypoint-initdb.d/initsql.sh
     touch $INIT_FILE
 	echo "Import finished"
 	echo
